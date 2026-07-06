@@ -1,20 +1,11 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Brain, Users, FileText, Upload,
   Bell, Search, ChevronRight, TrendingUp,
-  Shield, Zap, Clock, Menu, X, LogOut,
-  LayoutDashboard, ScanLine, FolderOpen, Settings
+  Shield, Zap, Clock, ScanLine
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', active: true },
-  { icon: ScanLine, label: 'Scan Analysis', active: false },
-  { icon: FolderOpen, label: 'Patient Records', active: false },
-  { icon: FileText, label: 'Reports', active: false },
-  { icon: Settings, label: 'Settings', active: false },
-];
+import Sidebar from '../components/Sidebar';
 
 const stats = [
   { label: 'Total Scans', value: '1,284', change: '+12%', icon: ScanLine, color: '#00D4FF', bg: '#00D4FF15' },
@@ -40,82 +31,14 @@ const activities = [
 ];
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeNav, setActiveNav] = useState('Dashboard');
   const navigate = useNavigate();
 
   return (
     <div className="flex min-h-screen"
       style={{ background: 'linear-gradient(135deg, #020818 0%, #0a0f2e 100%)' }}>
 
-      {/* Sidebar */}
-      <motion.aside
-        initial={{ x: -80, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="flex flex-col justify-between py-6 px-4 transition-all duration-300"
-        style={{
-          width: sidebarOpen ? '240px' : '72px',
-          minHeight: '100vh',
-          background: 'rgba(255,255,255,0.02)',
-          borderRight: '1px solid rgba(0,212,255,0.1)',
-          backdropFilter: 'blur(20px)',
-        }}
-      >
-        {/* Logo */}
-        <div>
-          <div className="flex items-center gap-3 mb-10 px-2">
-            <div className="p-2 rounded-xl flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #00D4FF30, #7B2FFF30)', border: '1px solid #00D4FF40' }}>
-              <Brain size={22} color="#00D4FF" />
-            </div>
-            {sidebarOpen && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-lg font-black text-white tracking-wider">
-                Stroke<span style={{ color: '#00D4FF' }}>XAI</span>
-              </motion.span>
-            )}
-          </div>
-
-          {/* Nav Items */}
-          <nav className="space-y-1">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => setActiveNav(item.label)}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 group"
-                style={{
-                  background: activeNav === item.label ? 'linear-gradient(135deg, #00D4FF15, #7B2FFF15)' : 'transparent',
-                  border: activeNav === item.label ? '1px solid #00D4FF30' : '1px solid transparent',
-                }}
-              >
-                <item.icon
-                  size={20}
-                  color={activeNav === item.label ? '#00D4FF' : '#475569'}
-                />
-                {sidebarOpen && (
-                  <span className="text-sm font-medium"
-                    style={{ color: activeNav === item.label ? '#00D4FF' : '#475569' }}>
-                    {item.label}
-                  </span>
-                )}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        {/* Logout */}
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300"
-          style={{ border: '1px solid rgba(255,100,100,0.2)' }}
-        >
-          <LogOut size={20} color="#FF6B6B" />
-          {sidebarOpen && <span className="text-sm font-medium" style={{ color: '#FF6B6B' }}>Logout</span>}
-        </button>
-      </motion.aside>
+      {/* ✅ Shared Sidebar Component */}
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -132,14 +55,9 @@ export default function Dashboard() {
             backdropFilter: 'blur(20px)',
           }}
         >
-          <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)}>
-              {sidebarOpen ? <X size={20} color="#64748B" /> : <Menu size={20} color="#64748B" />}
-            </button>
-            <div>
-              <h1 className="text-lg font-black text-white">Dashboard</h1>
-              <p className="text-xs" style={{ color: '#475569' }}>Welcome back, Dr. Sri Bhargava</p>
-            </div>
+          <div>
+            <h1 className="text-lg font-black text-white">Dashboard</h1>
+            <p className="text-xs" style={{ color: '#475569' }}>Welcome back, Dr. Sri Bhargava</p>
           </div>
 
           <div className="flex items-center gap-4">
@@ -224,7 +142,9 @@ export default function Dashboard() {
             >
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-base font-bold text-white">Recent Scans</h2>
-                <button className="text-xs flex items-center gap-1"
+                <button
+                  onClick={() => navigate('/patients')}
+                  className="text-xs flex items-center gap-1"
                   style={{ color: '#00D4FF' }}>
                   View All <ChevronRight size={12} />
                 </button>
@@ -237,6 +157,7 @@ export default function Dashboard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 + i * 0.08 }}
+                    onClick={() => navigate('/results')}
                     className="flex items-center justify-between p-3 rounded-xl transition-all duration-300 cursor-pointer group"
                     style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}
                     whileHover={{ background: 'rgba(0,212,255,0.05)', borderColor: 'rgba(0,212,255,0.2)' }}
@@ -275,6 +196,7 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
+                onClick={() => navigate('/scan-upload')}
                 className="rounded-2xl p-5 cursor-pointer group"
                 style={{
                   background: 'linear-gradient(135deg, #00D4FF10, #7B2FFF10)',
