@@ -106,13 +106,17 @@ export default function Login() {
 
   // ✅ Updated handleLogin to navigate to dashboard
   const handleLogin = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/dashboard');
-    }, 2000);
-  };
+  e.preventDefault();
+  setLoading(true);
+  setTimeout(() => {
+    setLoading(false);
+    if (activeRole === 'Doctor') {
+      navigate('/doctor-dashboard');
+    } else {
+      navigate('/admin-dashboard');
+    }
+  }, 2000);
+};
 
   return (
     <div className="relative min-h-screen overflow-hidden"
