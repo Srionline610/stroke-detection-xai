@@ -6,6 +6,7 @@ import ScanUpload from './pages/ScanUpload';
 import PatientRecords from './pages/PatientRecords';
 import Results from './pages/Results';
 import CreateDoctor from './pages/CreateDoctor';
+import ManageDoctors from './pages/ManageDoctors';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/patients" element={<PatientRecords />} />
         <Route path="/results" element={<Results />} />
         <Route path="/create-doctor" element={<CreateDoctor />} />
+        <Route path="/manage-doctors" element={<ManageDoctors />} />
       </Routes>
     </Router>
   );

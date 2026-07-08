@@ -18,7 +18,7 @@ const doctorNav = [
 
 const adminNav = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin-dashboard' },
-  { icon: Users, label: 'Manage Doctors', path: '/patients' },
+  { icon: Users, label: 'Manage Doctors', path: '/manage-doctors' },
   { icon: UserPlus, label: 'Create Doctor', path: '/create-doctor' },
   { icon: BarChart3, label: 'Analytics', path: '/analytics' },
   { icon: Shield, label: 'System', path: '/system' },
