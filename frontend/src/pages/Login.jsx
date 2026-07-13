@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Mail, Lock, Eye, EyeOff, Activity } from 'lucide-react';
+import { authService } from '../services/authService';
 
 function NeuralBackground() {
   const canvasRef = useRef(null);
@@ -105,17 +106,21 @@ export default function Login() {
   const navigate = useNavigate();
 
   // ✅ Updated handleLogin to navigate to dashboard
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
   e.preventDefault();
   setLoading(true);
-  setTimeout(() => {
+  try {
+    const data = await authService.login(email, password, activeRole.toUpperCase());
     setLoading(false);
-    if (activeRole === 'Doctor') {
+    if (data.role === 'DOCTOR') {
       navigate('/doctor-dashboard');
-    } else {
+    } else if (data.role === 'ADMIN') {
       navigate('/admin-dashboard');
     }
-  }, 2000);
+  } catch (error) {
+    setLoading(false);
+    alert('Invalid email or password!');
+  }
 };
 
   return (
